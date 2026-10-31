@@ -610,7 +610,7 @@ async function alterarStatus(id, novoStatus) {
 
   } catch (erro) {
     console.error("Erro ao alterar status:", erro);
-    alert("Não foi possível atualizar o pedido. Tente novamente.");
+    alert("Erro ao atualizar: " + erro.message);
   }
 }
 
