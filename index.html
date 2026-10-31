@@ -566,7 +566,7 @@ function renderizar() {
           ? `<button onclick="alterarStatus(${p.id}, 'entregue')">
               Pedido entregue
             </button>`
-          : <button disabled>Finalizado</button>
+          : `<button disabled>Finalizado</button>`
         }
       </div>
 
@@ -586,7 +586,7 @@ async function alterarStatus(id, novoStatus) {
   };
 
   try {
-    const resposta = await fetch(${API_URL}/${id}, {
+    const resposta = await fetch(`${API_URL}/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
