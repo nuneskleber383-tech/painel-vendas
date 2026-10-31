@@ -393,7 +393,7 @@ h2 {
 
       <div class="stat">
         <small>Pedidos hoje</small>
-        <strong id="count">3</strong>
+        <strong id="count">0</strong>
         <span>Pedidos registrados</span>
       </div>
 
@@ -405,13 +405,13 @@ h2 {
 
       <div class="stat">
         <small>Em preparo</small>
-        <strong id="preparing">1</strong>
+        <strong id="preparing">0</strong>
         <span>Aguardando conclusão</span>
       </div>
 
       <div class="stat">
         <small>Em entrega</small>
-        <strong id="delivery">1</strong>
+        <strong id="delivery">0</strong>
         <span>Pedidos em rota</span>
       </div>
 
@@ -565,7 +565,7 @@ function renderizar() {
           ? `<button onclick="alterarStatus(${p.id}, 'entregue')">
               Pedido entregue
             </button>`
-          : <button disabled>Finalizado</button>
+          : `<button disabled>Finalizado</button>`
         }
       </div>
 
@@ -591,7 +591,7 @@ document.querySelectorAll(".filters button").forEach(botao => {
     botao.classList.add("active");
     filtroAtual = botao.dataset.filter;
 
-  carregarpedidos();
+  carregarPedidos();
   });
 });
 
