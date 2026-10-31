@@ -484,13 +484,14 @@ async function carregarPedidos() {
 
     renderizar();
 
-  } catch (erro) {
+ } catch (erro) {
     console.error("Erro ao carregar pedidos:", erro);
 
     document.getElementById("orders").innerHTML =
       '<div class="empty">Não foi possível carregar os pedidos.</div>';
   }
 }
+
 let filtroAtual = "todos";
 
 const moeda = valor =>
@@ -532,7 +533,7 @@ function renderizar() {
     return;
   }
 
- lista.innerHTML = filtrados.map(p => `
+  lista.innerHTML = filtrados.map(p => `
     <article class="order">
 
       <div class="order-top">
@@ -573,13 +574,44 @@ function renderizar() {
   `).join("");
 }
 
-function alterarStatus(id, novoStatus) {
+async function alterarStatus(id, novoStatus) {
   const pedido = pedidos.find(p => p.id === id);
 
   if (!pedido) return;
 
-  pedido.status = novoStatus;
-  renderizar();
+  const statusBanco = {
+    preparo: "em_preparo",
+    entrega: "saiu_para_entrega",
+    entregue: "entregue"
+  };
+
+  try {
+    const resposta = await fetch(${API_URL}/${id}, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        etapa: statusBanco[novoStatus],
+        status: statusBanco[novoStatus]
+      })
+    });
+
+    const resultado = await resposta.json();
+
+    if (!resposta.ok || !resultado.success) {
+      throw new Error(
+        resultado.message || "Erro ao atualizar pedido"
+      );
+    }
+
+    pedido.status = novoStatus;
+    renderizar();
+
+  } catch (erro) {
+    console.error("Erro ao alterar status:", erro);
+    alert("Não foi possível atualizar o pedido. Tente novamente.");
+  }
 }
 
 document.querySelectorAll(".filters button").forEach(botao => {
@@ -591,12 +623,12 @@ document.querySelectorAll(".filters button").forEach(botao => {
     botao.classList.add("active");
     filtroAtual = botao.dataset.filter;
 
-  renderizar();
+    renderizar();
   });
 });
 
 carregarPedidos();
-  setInterval(carregarPedidos, 10000);
+setInterval(carregarPedidos, 10000);
 </script>
 
 </body>
