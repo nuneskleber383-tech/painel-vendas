@@ -532,7 +532,7 @@ function renderizar() {
     return;
   }
 
-  lista.innerHTML = filtrados.map(p => `
+ lista.innerHTML = filtrados.map(p => `
     <article class="order">
 
       <div class="order-top">
@@ -565,7 +565,7 @@ function renderizar() {
           ? `<button onclick="alterarStatus(${p.id}, 'entregue')">
               Pedido entregue
             </button>`
-          : `<button disabled>Finalizado</button>`
+          : <button disabled>Finalizado</button>
         }
       </div>
 
