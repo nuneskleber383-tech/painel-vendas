@@ -443,36 +443,54 @@ h2 {
 </div>
 
 <script>
-const pedidos = [
-  {
-    id: 4,
-    nome: "Cliente demonstrativo",
-    chat_id: "5583999999999",
-    produto: "1x Coxinha",
-    endereco: "Endereço de demonstração",
-    total: 8.00,
-    status: "preparo"
-  },
-  {
-    id: 3,
-    nome: "Maria Silva",
-    chat_id: "5583999999998",
-    produto: "1x Pizza Calabresa",
-    endereco: "Rua de demonstração, 120",
-    total: 49.90,
-    status: "entrega"
-  },
-  {
-    id: 2,
-    nome: "João Santos",
-    chat_id: "5583999999997",
-    produto: "1x X-Burguer",
-    endereco: "Avenida Central, 50",
-    total: 28.90,
-    status: "entregue"
-  }
-];
+let pedidos = [];
+  const API_URL = "https://mysql-db-api-vendas.8p6scb.easypanel.host/api/pedidos";
 
+async function carregarPedidos() {
+  try {
+    const resposta = await fetch(API_URL);
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar a API");
+    }
+
+    const resultado = await resposta.json();
+
+    if (!resultado.success) {
+      throw new Error("A API não retornou sucesso");
+    }
+
+    pedidos = resultado.data.map(p => {
+      let status = p.etapa || p.status || "preparo";
+
+      if (status === "saiu_para_entrega") {
+        status = "entrega";
+      }
+
+      if (status === "em_preparo" || status === "recebido") {
+        status = "preparo";
+      }
+
+      return {
+        id: Number(p.id_pedido),
+        nome: p.nome || "Cliente não identificado",
+        chat_id: p.chat_id || "",
+        produto: p.pedido || "",
+        endereco: p.endereco || "",
+        total: Number(p.total) || 0,
+        status: status
+      };
+    });
+
+    renderizar();
+
+  } catch (erro) {
+    console.error("Erro ao carregar pedidos:", erro);
+
+    document.getElementById("orders").innerHTML =
+      '<div class="empty">Não foi possível carregar os pedidos.</div>';
+  }
+}
 let filtroAtual = "todos";
 
 const moeda = valor =>
