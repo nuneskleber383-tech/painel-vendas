@@ -520,14 +520,14 @@ function renderizar() {
   document.getElementById("count").textContent = pedidos.length;
 
   document.getElementById("revenue").textContent =
-    moeda(pedidos.reduce((s, p) => s + Number(p.total), 0));
+  moeda(pedidos.reduce((s, p) => s + Number(p.total), 0));
 
   document.getElementById("preparing").textContent =
-    pedidos.filter(p => p.status === "preparo").length;
+  pedidos.filter(p => p.status === "preparo").length;
 
   document.getElementById("delivery").textContent =
-    pedidos.filter(p => p.status === "entrega").length;
-
+  pedidos.filter(p => p.status === "entrega").length;
+  
   if (!filtrados.length) {
     lista.innerHTML = '<div class="empty">Nenhum pedido nesta categoria.</div>';
     return;
