@@ -550,6 +550,11 @@ function nomeStatus(status) {
 function renderizar() {
   const lista = document.getElementById("orders");
 
+  function renderizar() {
+  const lista = document.getElementById("orders");
+
+  renderizarEntregas();
+
   const filtrados = pedidos.filter(p =>
     filtroAtual === "todos" || p.status === filtroAtual
   );
@@ -610,7 +615,46 @@ function renderizar() {
     </article>
   `).join("");
 }
+function renderizarEntregas() {
+  const lista = document.getElementById("orders-entregas");
 
+  const entregas = pedidos.filter(p => p.status === "entrega");
+
+  if (!entregas.length) {
+    lista.innerHTML = '<div class="empty">Nenhum pedido em entrega no momento.</div>';
+    return;
+  }
+
+  lista.innerHTML = entregas.map(p => `
+    <article class="order">
+
+      <div class="order-top">
+        <span class="order-id">PEDIDO #${p.id}</span>
+        <span class="status entrega">Saiu para entrega</span>
+      </div>
+
+      <div class="customer">${p.nome}</div>
+
+      <div class="detail">
+        ${p.produto}<br>
+        WhatsApp: ${p.chat_id}<br>
+        Endereço: ${p.endereco}
+      </div>
+
+      <div class="total">
+        <span>Total</span>
+        <span>${moeda(p.total)}</span>
+      </div>
+
+      <div class="actions">
+        <button onclick="alterarStatus(${p.id}, 'entregue')">
+          Pedido entregue
+        </button>
+      </div>
+
+    </article>
+  `).join("");
+}
 async function alterarStatus(id, novoStatus) {
   const pedido = pedidos.find(p => p.id === id);
 
