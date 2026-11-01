@@ -349,6 +349,13 @@ h2 {
     flex-direction: column;
   }
 }
+  .page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
 </style>
 </head>
 
@@ -361,18 +368,18 @@ h2 {
 
     <div class="menu-label">Principal</div>
 
-    <nav class="menu">
-      <a href="#" class="active">▦ Visão geral</a>
-      <a href="#pedidos">▤ Pedidos</a>
-      <a href="#pedidos">◷ Entregas</a>
-      <a href="#">▣ Clientes</a>
-      <a href="#">▥ Relatórios</a>
-    </nav>
+  <nav class="menu">
+    <a href="#visao-geral" class="active" data-page="visao-geral">▦ Visão geral</a>
+    <a href="#pedidos" data-page="pedidos">▤ Pedidos</a>
+    <a href="#entregas" data-page="entregas">◷ Entregas</a>
+    <a href="#clientes" data-page="clientes">▣ Clientes</a>
+    <a href="#relatorios" data-page="relatorios">▥ Relatórios</a>
+  </nav>
 
     <div class="menu-label">Sistema</div>
 
     <nav class="menu">
-      <a href="#">⚙️ Configurações</a>
+      <a href="#configuracoes" data-page="configuracoes">⚙️ Configurações</a>
     </nav>
   </aside>
 
@@ -436,6 +443,33 @@ h2 {
       <div class="orders" id="orders"></div>
 
     </section>
+    <section id="entregas" class="page">
+  <div class="section-head">
+    <h2>Entregas</h2>
+  </div>
+
+  <div class="orders" id="orders-entregas"></div>
+</section>
+    <section id="clientes" class="page">
+  <div class="section-head">
+    <h2>Clientes</h2>
+  </div>
+  <div class="empty">Área de clientes em desenvolvimento.</div>
+</section>
+
+<section id="relatorios" class="page">
+  <div class="section-head">
+    <h2>Relatórios</h2>
+  </div>
+  <div class="empty">Área de relatórios em desenvolvimento.</div>
+</section>
+
+<section id="configuracoes" class="page">
+  <div class="section-head">
+    <h2>Configurações</h2>
+  </div>
+  <div class="empty">Área de configurações em desenvolvimento.</div>
+</section>
 
     <div class="footer">
        · desenvolvido por axion systems · Versão 1.0
@@ -627,6 +661,25 @@ document.querySelectorAll(".filters button").forEach(botao => {
     filtroAtual = botao.dataset.filter;
 
     renderizar();
+  });
+});
+  document.querySelectorAll(".menu a[data-page]").forEach(link => {
+  link.addEventListener("click", evento => {
+    evento.preventDefault();
+
+    const pagina = link.dataset.page;
+
+    document.querySelectorAll(".page").forEach(secao => {
+      secao.classList.remove("active");
+    });
+
+    document.getElementById(pagina).classList.add("active");
+
+    document.querySelectorAll(".menu a").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    link.classList.add("active");
   });
 });
 
