@@ -550,7 +550,6 @@ function nomeStatus(status) {
   function renderizar() {
   const lista = document.getElementById("orders");
 
-  renderizarEntregas();
 
   const filtrados = pedidos.filter(p =>
     filtroAtual === "todos" || p.status === filtroAtual
@@ -611,6 +610,8 @@ function nomeStatus(status) {
 
     </article>
   `).join("");
+
+    renderizarEntregas();
 }
 function renderizarEntregas() {
   const lista = document.getElementById("orders-entregas");
