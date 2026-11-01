@@ -450,11 +450,24 @@ h2 {
 
   <div class="orders" id="orders-entregas"></div>
 </section>
-    <section id="clientes" class="page">
+   <section id="clientes" class="page">
+
   <div class="section-head">
     <h2>Clientes</h2>
   </div>
-  <div class="empty">Área de clientes em desenvolvimento.</div>
+
+  <div class="client-search">
+    <input
+      type="text"
+      id="buscar-cliente"
+      placeholder="Buscar por nome ou WhatsApp..."
+    >
+  </div>
+
+  <div class="orders" id="lista-clientes">
+    <div class="empty">Carregando clientes...</div>
+  </div>
+
 </section>
 
 <section id="relatorios" class="page">
@@ -482,6 +495,35 @@ h2 {
 <script>
 let pedidos = [];
   const API_URL = "https://mysql-db-api-vendas.8p6ecb.easypanel.host/api/pedidos";
+
+  const API_CLIENTES = "https://mysql-db-api-vendas.8p6ecb.easypanel.host/api/clientes";
+
+let clientes = [];
+  
+  async function carregarClientes() {
+  try {
+    const resposta = await fetch(API_CLIENTES);
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar clientes");
+    }
+
+    const resultado = await resposta.json();
+
+    if (!resultado.success) {
+      throw new Error("A API não retornou sucesso");
+    }
+
+    clientes = resultado.data;
+    renderizarClientes();
+
+  } catch (erro) {
+    console.error("Erro ao carregar clientes:", erro);
+
+    document.getElementById("lista-clientes").innerHTML =
+      '<div class="empty">Não foi possível carregar os clientes.</div>';
+  }
+}
 
 async function carregarPedidos() {
   try {
@@ -546,6 +588,52 @@ function nomeStatus(status) {
 
   return nomes[status] || status;
 }
+
+  function renderizarClientes() {
+  const lista = document.getElementById("lista-clientes");
+  const busca = document.getElementById("buscar-cliente").value.toLowerCase();
+
+  const filtrados = clientes.filter(c =>
+    (c.nome || "").toLowerCase().includes(busca) ||
+    (c.chat_id || "").toLowerCase().includes(busca)
+  );
+
+  if (!filtrados.length) {
+    lista.innerHTML = '<div class="empty">Nenhum cliente encontrado.</div>';
+    return;
+  }
+
+  lista.innerHTML = filtrados.map(c => `
+    <article class="order">
+
+      <div class="customer">${c.nome || "Cliente sem nome"}</div>
+
+      <div class="detail">
+        WhatsApp: ${c.chat_id}<br>
+        Endereço: ${c.endereco || "Não informado"}<br>
+        Pedidos realizados: ${c.quantidade_pedidos}
+      </div>
+
+      <div class="total">
+        <span>Total comprado</span>
+        <span>${moeda(c.total_gasto)}</span>
+      </div>
+
+      <div class="detail">
+        Última compra: ${
+          c.ultima_compra
+            ? new Date(c.ultima_compra).toLocaleString("pt-BR")
+            : "Não disponível"
+        }
+      </div>
+
+    </article>
+  `).join("");
+}
+
+  document.getElementById("buscar-cliente").addEventListener("input", () => {
+  renderizarClientes();
+});
 
   function renderizar() {
   const lista = document.getElementById("orders");
@@ -727,6 +815,9 @@ document.querySelectorAll(".filters button").forEach(botao => {
 
 carregarPedidos();
 setInterval(carregarPedidos, 10000);
+
+carregarClientes();
+setInterval(carregarClientes, 30000);
 </script>
 
 </body>
