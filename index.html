@@ -742,10 +742,12 @@ function renderizarEntregas() {
   `).join("");
 }
 async function alterarStatus(id, novoStatus) {
-  const pedido = pedidos.find(p => p.id === id);
+  const pedido =
+  pedidos.find(p => Number(p.id) === Number(id)) ||
+  entregasPendentes.find(p => Number(p.id) === Number(id));
 
-  if (!pedido) return;
-
+if (!pedido) return;
+  
   const statusBanco = {
     preparo: "em_preparo",
     entrega: "saiu_para_entrega",
