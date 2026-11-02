@@ -591,13 +591,21 @@ function nomeStatus(status) {
 
   function renderizarClientes() {
   const lista = document.getElementById("lista-clientes");
-  const busca = document.getElementById("buscar-cliente").value.toLowerCase();
+ const normalizar = texto =>
+  (texto || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
 
-  const filtrados = clientes.filter(c =>
-    (c.nome || "").toLowerCase().includes(busca) ||
-    (c.chat_id || "").toLowerCase().includes(busca)
-  );
+const busca = normalizar(
+  document.getElementById("buscar-cliente").value
+);
 
+const filtrados = clientes.filter(c =>
+  normalizar(c.nome).includes(busca) ||
+  normalizar(c.chat_id).includes(busca)
+);
   if (!filtrados.length) {
     lista.innerHTML = '<div class="empty">Nenhum cliente encontrado.</div>';
     return;
