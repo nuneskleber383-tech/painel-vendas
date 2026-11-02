@@ -699,7 +699,7 @@ function nomeStatus(status) {
     </article>
   `).join("");
 
-    renderizarEntregas();
+    
 }
 function renderizarEntregas() {
   const lista = document.getElementById("orders-entregas");
@@ -775,7 +775,10 @@ if (!pedido) return;
     }
 
     pedido.status = novoStatus;
-    renderizar();
+
+await carregarEntregasPendentes();
+
+renderizar();
 
   } catch (erro) {
     console.error("Erro ao alterar status:", erro);
@@ -820,6 +823,9 @@ setInterval(carregarPedidos, 10000);
 
 carregarClientes();
 setInterval(carregarClientes, 30000);
+  
+carregarEntregasPendentes();
+setInterval(carregarEntregasPendentes, 10000);
 </script>
 
 </body>
