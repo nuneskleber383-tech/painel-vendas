@@ -32,14 +32,21 @@ body {
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 21px;
   font-weight: 800;
-  color: white;
+  color: #ffffff;
   margin-bottom: 38px;
+  letter-spacing: 1px;
 }
 
 .logo span {
-  color: #38bdf8;
+  color: #16b8ff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
 }
 
 .menu-label {
@@ -308,6 +315,30 @@ h2 {
   .logo {
     margin: 0 0 12px;
   }
+  logo-simbolo {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #16b8ff;
+  border-radius: 11px;
+  color: #16b8ff;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.logo-texto span {
+  color: #16b8ff;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
 
   .menu {
     display: flex;
@@ -373,7 +404,10 @@ h2 {
 <div class="app">
 
   <aside class="sidebar">
-    <div class="logo">KLEBER<span>SISTEMAS</span></div>
+   <div class="logo">
+  <div class="logo-simbolo">A</div>
+  <div class="logo-texto"> AXION  <span>SISTEMAS</span></div>
+</div>
 
     <div class="menu-label">Principal</div>
 
