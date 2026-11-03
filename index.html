@@ -570,6 +570,39 @@ async function carregarPedidos() {
       '<div class="empty">Não foi possível carregar os pedidos.</div>';
   }
 }
+  async function carregarEntregasPendentes() {
+  try {
+    const resposta = await fetch(API_ENTREGAS);
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar entregas");
+    }
+
+    const resultado = await resposta.json();
+
+    if (!resultado.success) {
+      throw new Error("A API não retornou sucesso nas entregas");
+    }
+
+    entregasPendentes = resultado.data.map(p => ({
+      id: Number(p.id_pedido),
+      nome: p.nome || "Cliente não identificado",
+      chat_id: p.chat_id || "",
+      produto: p.pedido || "",
+      endereco: p.endereco || "",
+      total: Number(p.total) || 0,
+      status: "entrega"
+    }));
+
+    renderizarEntregas();
+
+  } catch (erro) {
+    console.error("Erro ao carregar entregas pendentes:", erro);
+
+    document.getElementById("orders-entregas").innerHTML =
+      '<div class="empty">Não foi possível carregar as entregas.</div>';
+  }
+}
 
 let filtroAtual = "todos";
 
