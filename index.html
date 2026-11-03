@@ -531,6 +531,7 @@ let pedidos = [];
   const API_ENTREGAS = "https://mysql-db-api-vendas.8p6ecb.easypanel.host/api/entregas-pendentes";
 
 let graficoFaturamento = null;
+let graficoPedidos = null;
 
 let clientes = [];
   
@@ -771,11 +772,11 @@ async function carregarGraficoFaturamento() {
       .getElementById("graficoPedidos")
       .getContext("2d");
 
-    if (window.graficoPedidos) {
-      window.graficoPedidos.destroy();
-    }
+    if (graficoPedidos) {
+    graficoPedidos.destroy();
+  }
 
-    window.graficoPedidos = new Chart(contexto, {
+  graficoPedidos = new Chart(contexto, {
       type: "bar",
       data: {
         labels: labels,
