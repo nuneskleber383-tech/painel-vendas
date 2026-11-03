@@ -659,7 +659,7 @@ async function carregarGraficoFaturamento() {
         String(p.data).slice(0, 10) === dataFormatada
       );
 
-      labels.push(${numeroDia}/${mes});
+      labels.push(`${numeroDia}/${mes}`);
       valores.push(registro ? Number(registro.faturamento) : 0);
     }
 
