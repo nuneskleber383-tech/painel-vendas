@@ -757,13 +757,13 @@ async function carregarGraficoFaturamento() {
       const mes = String(dia.getMonth() + 1).padStart(2, "0");
       const numeroDia = String(dia.getDate()).padStart(2, "0");
 
-      const dataFormatada = ${ano}-${mes}-${numeroDia};
+      const dataFormatada = $`{ano}-${mes}-${numeroDia}`;
 
       const registro = resultado.data.find(p =>
         String(p.data).slice(0, 10) === dataFormatada
       );
 
-      labels.push(${numeroDia}/${mes});
+      labels.push(`${numeroDia}/${mes}`);
       valores.push(registro ? Number(registro.quantidade_pedidos) : 0);
     }
 
