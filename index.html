@@ -58,7 +58,9 @@ body {
 }
 
 .menu a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   text-decoration: none;
   color: #94a3b8;
   padding: 13px 14px;
@@ -72,6 +74,13 @@ body {
 .menu a:hover {
   background: #1e293b;
   color: #38bdf8;
+}
+
+.menu a i {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
+  flex-shrink: 0;
 }
 
 .main {
@@ -396,7 +405,8 @@ h2 {
   display: block;
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>  
 </head>
 
 <body>
@@ -411,19 +421,41 @@ h2 {
 
     <div class="menu-label">Principal</div>
 
-  <nav class="menu">
-    <a href="#visao-geral" class="active" data-page="visao-geral">▦ Visão geral</a>
-    <a href="#pedidos" data-page="pedidos">▤ Pedidos</a>
-    <a href="#entregas" data-page="entregas">◷ Entregas</a>
-    <a href="#clientes" data-page="clientes">▣ Clientes</a>
-    <a href="#relatorios" data-page="relatorios">▥ Relatórios</a>
-  </nav>
+ <nav class="menu">
+  <a href="#visao-geral" class="active" data-page="visao-geral">
+    <i data-lucide="layout-dashboard"></i>
+    <span>Visão geral</span>
+  </a>
 
-    <div class="menu-label">Sistema</div>
+  <a href="#pedidos" data-page="pedidos">
+    <i data-lucide="shopping-bag"></i>
+    <span>Pedidos</span>
+  </a>
 
-    <nav class="menu">
-      <a href="#configuracoes" data-page="configuracoes">⚙️ Configurações</a>
-    </nav>
+  <a href="#entregas" data-page="entregas">
+    <i data-lucide="bike"></i>
+    <span>Entregas</span>
+  </a>
+
+  <a href="#clientes" data-page="clientes">
+    <i data-lucide="users-round"></i>
+    <span>Clientes</span>
+  </a>
+
+  <a href="#relatorios" data-page="relatorios">
+    <i data-lucide="chart-no-axes-combined"></i>
+    <span>Relatórios</span>
+  </a>
+</nav>
+
+<div class="menu-label">Sistema</div>
+
+<nav class="menu">
+  <a href="#configuracoes" data-page="configuracoes">
+    <i data-lucide="settings"></i>
+    <span>Configurações</span>
+  </a>
+</nav>
   </aside>
 
   <main class="main">
@@ -1138,6 +1170,7 @@ setInterval(carregarGraficoFaturamento, 60000);
 
 carregarGraficoPedidos();
 setInterval(carregarGraficoPedidos, 60000);  
+lucide.createIcons();
 </script>
 
 </body>
