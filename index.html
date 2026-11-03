@@ -413,6 +413,7 @@ h2 {
       </div>
 
       <div class="stat">
+      
         <small>Em preparo</small>
         <strong id="preparing">0</strong>
         <span>Aguardando conclusão</span>
@@ -423,7 +424,15 @@ h2 {
         <strong id="delivery">0</strong>
         <span>Pedidos em rota</span>
       </div>
+</div>
 
+      <div class="stat">
+        <small>Pedidos concluídos</small>
+        <strong id="completed">0</strong>
+        <span>Pedidos finalizados hoje</span>
+      </div>
+
+    </section>
     </section>
       </section>
 
@@ -694,6 +703,9 @@ const filtrados = clientes.filter(c =>
 
   document.getElementById("delivery").textContent =
   pedidos.filter(p => p.status === "entrega").length;
+
+  document.getElementById("completed").textContent =
+  pedidos.filter(p => p.status === "entregue").length;
   
   if (!filtrados.length) {
     lista.innerHTML = '<div class="empty">Nenhum pedido nesta categoria.</div>';
