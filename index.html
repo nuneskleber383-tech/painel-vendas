@@ -441,8 +441,19 @@ h2 {
      <canvas id="graficoFaturamento"></canvas>
     </div>
    </div>
+
+      <div class="stat" style="margin-top: 20px; grid-column: 1 / -1;">
+  <h2 style="margin-bottom: 20px;">Pedidos por dia — últimos 7 dias</h2>
+
+  <div style="height: 300px;">
+    <canvas id="graficoPedidos"></canvas>
+  </div>
+</div>
     </section>
-     
+
+
+
+    
 
    <section id="pedidos" class="page">
 
@@ -717,6 +728,97 @@ async function carregarGraficoFaturamento() {
     console.error("Erro ao carregar gráfico:", erro);
   }
 }
+  async function carregarGraficoPedidos() {
+  try {
+    const resposta = await fetch(API_FATURAMENTO);
+
+    if (!resposta.ok) {
+      throw new Error("Erro ao consultar quantidade de pedidos");
+    }
+
+    const resultado = await resposta.json();
+
+    if (!resultado.success) {
+      throw new Error("Erro nos dados de pedidos");
+    }
+
+    const hoje = new Date();
+    const labels = [];
+    const valores = [];
+
+    for (let i = 6; i >= 0; i--) {
+      const dia = new Date(
+        hoje.getFullYear(),
+        hoje.getMonth(),
+        hoje.getDate() - i
+      );
+
+      const ano = dia.getFullYear();
+      const mes = String(dia.getMonth() + 1).padStart(2, "0");
+      const numeroDia = String(dia.getDate()).padStart(2, "0");
+
+      const dataFormatada = ${ano}-${mes}-${numeroDia};
+
+      const registro = resultado.data.find(p =>
+        String(p.data).slice(0, 10) === dataFormatada
+      );
+
+      labels.push(${numeroDia}/${mes});
+      valores.push(registro ? Number(registro.quantidade_pedidos) : 0);
+    }
+
+    const contexto = document
+      .getElementById("graficoPedidos")
+      .getContext("2d");
+
+    if (window.graficoPedidos) {
+      window.graficoPedidos.destroy();
+    }
+
+    window.graficoPedidos = new Chart(contexto, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Quantidade de pedidos",
+          data: valores,
+          backgroundColor: "#22c55e",
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: "#e5e7eb"
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: "#94a3b8" },
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: "#94a3b8",
+              precision: 0
+            },
+            grid: {
+              color: "#263247"
+            }
+          }
+        }
+      }
+    });
+
+  } catch (erro) {
+    console.error("Erro ao carregar gráfico de pedidos:", erro);
+  }
+}
 let filtroAtual = "todos";
 
 const moeda = valor =>
@@ -985,7 +1087,10 @@ carregarEntregasPendentes();
 setInterval(carregarEntregasPendentes, 10000);
   
 carregarGraficoFaturamento();
-setInterval(carregarGraficoFaturamento, 60000);  
+setInterval(carregarGraficoFaturamento, 60000);
+
+carregarGraficoPedidos();
+setInterval(carregarGraficoPedidos, 60000);  
 </script>
 
 </body>
