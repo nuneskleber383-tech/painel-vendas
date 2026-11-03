@@ -105,6 +105,11 @@ h1 {
   gap: 16px;
   margin-bottom: 30px;
 }
+.graficos-container {
+ display: grid;
+ grid-template-columns: repeat(2, minmax(0, 1fr));
+ gap: 16px;  margin-bottom: 30px;
+}
 
 .stat {
   background: #111c2e;
@@ -280,6 +285,9 @@ h2 {
 @media(max-width: 1050px) {
   .stats {
     grid-template-columns: repeat(2, 1fr);
+  .graficos-container {
+    grid-template-columns: 1fr;
+}
   }
 
   .orders {
@@ -435,18 +443,22 @@ h2 {
 
     </section>
 
-      <div class="stat" style="margin-top: 20px; grid-column: 1 / -1;">
-      <h2 style="margin-bottom: 20px;">Faturamento dos últimos 7 dias</h2>
-      <div style="height: 300px;">
-     <canvas id="graficoFaturamento"></canvas>
+      <div class="graficos-container">
+
+  <div class="stat">
+    <h2 style="margin-bottom: 20px;">Faturamento dos últimos 7 dias</h2>
+
+    <div style="height: 300px;">
+      <canvas id="graficoFaturamento"></canvas>
     </div>
-   </div>
+  </div>
 
-      <div class="stat" style="margin-top: 20px; grid-column: 1 / -1;">
-  <h2 style="margin-bottom: 20px;">Pedidos por dia — últimos 7 dias</h2>
+  <div class="stat">
+    <h2 style="margin-bottom: 20px;">Pedidos por dia — últimos 7 dias</h2>
 
-  <div style="height: 300px;">
-    <canvas id="graficoPedidos"></canvas>
+    <div style="height: 300px;">
+      <canvas id="graficoPedidos"></canvas>
+    </div>
   </div>
 </div>
     </section>
